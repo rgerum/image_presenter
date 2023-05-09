@@ -249,7 +249,7 @@
         });
     }
 
-    const image_base_path = "/static/img/";
+    const image_base_path = "static/img/";
     async function set_data(data) {
         console.log("set data", set_data)
         document.querySelector("#choice1_label").innerHTML = data.choices1;
@@ -293,7 +293,7 @@
         // download the data from the flask server
         question_list = await (await fetch("data")).json();
         // wait for the user to press the button
-        await waitingKeypress([32]);
+        await waitingKeypress([32, 13]);
         // store the name
         results.name = document.querySelector("#input_name").value.trim()
 
