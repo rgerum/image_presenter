@@ -29,7 +29,8 @@ function delay(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function set_image(element, src) {
+async function set_image(element, src, image_size) {
+    element.style.width = image_size;
     return new Promise(resolve => {
         element.onload = function () {
             resolve();

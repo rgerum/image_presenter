@@ -56,7 +56,7 @@
 
 <div class="display" id="display_maps">
     <div class="question">
-        <span>Which are did you focus most for this decision?</span>
+        <span>Which area did you focus most for this decision?</span>
     </div>
     <div class="choices">
         <div class="choice" onclick="onKeyHandler({keyCode: 37})">
@@ -85,6 +85,8 @@
         name: "",
         data: [],
     };
+    let duration = 1000; // in millie seconds
+    let image_size = "200px";
 
     function show(part_name) {
         document.querySelectorAll(".display").forEach((e) => e.style.display = "none");
@@ -96,10 +98,11 @@
         console.log("set data", set_data)
         document.querySelector("#choice1_label").innerHTML = data.choices1;
         document.querySelector("#choice2_label").innerHTML = data.choices2;
+
         return Promise.all([
-            set_image(document.querySelector("#image"), image_base_path+data.image),
-            set_image(document.querySelector("#choice1_label_img"), image_base_path+data.maps1),
-            set_image(document.querySelector("#choice2_label_img"), image_base_path+data.maps2),
+            set_image(document.querySelector("#image"), image_base_path+data.image, image_size),
+            set_image(document.querySelector("#choice1_label_img"), image_base_path+data.maps1, image_size),
+            set_image(document.querySelector("#choice2_label_img"), image_base_path+data.maps2, image_size),
         ]);
     }
 
@@ -127,10 +130,12 @@
 
             // show the image and let the progress bar run
             show("#display_image");
-            for (let i = 0; i < 100; i++) {
+            let timer = new Date();
+            for (let i = 0; i <= 100; i++) {
                 set_progress(100 - i);
-                await delay(10);
+                await delay(duration*i/100 - (new Date()-timer));
             }
+            console.log("time", new Date() - timer);
 
             // ask which class
             show("#display_choice");

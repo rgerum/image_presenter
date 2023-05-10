@@ -81,14 +81,12 @@ body {
 }
 
 .image_display img {
-    width: 100px;
-    height: 100px;
+    image-rendering: pixelated;
 }
 
 .label_img {
-    width: 100px;
-    height: 100px;
     margin-bottom: 10px;
+    image-rendering: pixelated;
 }
 
 #start {
