@@ -91,29 +91,6 @@
         document.querySelector(part_name).style.display = "";
     }
 
-        document.querySelector("#choice1_label").style.display = 'none'
-        document.querySelector("#choice2_label").style.display = 'none'
-        document.querySelector("#choice1_label_img").style.display = 'inline'
-        document.querySelector("#choice2_label_img").style.display = 'inline'
-    }
-    function show_end() {
-        document.querySelector(".image_display").style.display = "none";
-        document.querySelector(".progress").style.width = "0";
-        document.querySelector("#choice1").style.display = "none";
-        document.querySelector("#choice2").style.display = "none";
-        document.querySelector("#start").style.display = "none";
-    }
-
-    async function set_image(element, src) {
-        return new Promise(resolve => {
-            element.onload = function() {
-                console.log("lodaded", element.src)
-                resolve();
-            };
-            element.src = src
-        });
-    }
-
     const image_base_path = "static/img/";
     async function set_data(data) {
         console.log("set data", set_data)

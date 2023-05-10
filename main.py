@@ -60,9 +60,9 @@ def save():
     data = request.json
     time = make_filename_save(data["time"])
     name = make_filename_save(data["name"])
-    with open(f"{time}_{name}.json", "w") as fp:
+    with open(f"output_json/{time}_{name}.json", "w") as fp:
         json.dump(data, fp, indent=2)
-    pd.DataFrame(data["data"]).to_csv(f"{time}_{name}.csv")
+    pd.DataFrame(data["data"]).to_csv(f"output_csv/{time}_{name}.csv")
     return "done"
 
 @app.route("/")
