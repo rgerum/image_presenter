@@ -3,7 +3,7 @@ body {
 }
 
 .display {
-    margin: calc(100vh - 900px) 100px;
+    margin-top: max((100vh - 450px) / 3, 0px);
     /* background: #c2c2c2;
     border: 2px solid black;
     border-radius: 10px; */
