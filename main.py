@@ -13,6 +13,8 @@ app = Flask(__name__)
 
 with app.test_request_context():
     url_for('static', filename='templates/index.html')
+    url_for('static', filename='templates/style.css')
+    url_for('static', filename='templates/helper_functions.js')
 #(x1, y1), (x2, y2) = tensorflow.keras.datasets.cifar10.load_data()
 
 def send_image(im_array):
