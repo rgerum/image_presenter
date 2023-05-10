@@ -3,108 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-        body {
-            background: gray;
-        }
-        .main {
-            display: none;
-            align-items: center;
-            height: 100vh;
-        }
-        .main2 {
-            margin: calc(100vh - 900px) 100px;
-            background: #c2c2c2;
-            border: 2px solid black;
-            border-radius: 10px;
-        }
-        .question {
-            display: flex;
-            font-size: 2em;
-            height: 150px;
-            border-radius: 5px 5px 0 0;
-            background: #6b6b6b;
-            border-bottom: 2px solid black;
-        }
-        .question span {
-            margin: auto;
-        }
-        .choices {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            width: 100%;
-            height: 300px;
-            text-align: center;
-            justify-content: center;
-            gap: 50px;
-        }
-        .choice {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background: whitesmoke;
-            border: 2px solid gray;
-            border-radius: 10px;
-            width: 300px;
-            text-align: center;
-            padding: 50px;
-            cursor: pointer;
-        }
-        .choice:hover {
-            filter: brightness(1.1);
-        }
-        .label {
-            font-size: 5em;
-        }
-        .info {
-            font-style: italic;
-        }
-        .key {
-            display: inline-block;
-            background: white;
-            border: 1px solid #2d2d2d;
-            border-radius: 5px;
-            width: 20px;
-            height: 20px;
-            border-bottom-width: 2px;
-            border-right-width: 2px;
-        }
-        .image_display {
-            display: flex;
-            flex-direction: column;
-        }
-        .progress {
-            height: 5px;
-            width: 0;
-            background: red;
-        }
-        .image_display img {
-            width: 100px;
-            height: 100px;
-        }
-        .label_img {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 10px;
-        }
-
-        #start {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-    </style>
+    <script src="helper_functions.js"></script>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div class="main2">
+<div class="display" id="display_start">
     <div class="question">
         <span id="question_text"></span>
     </div>
     <div class="choices">
         <div id="start">
             <div id="form">
-                <span>Name: </span><input id="input_name" placeholder="enter name"/>
+                <label for="input_name">Name:</label><input id="input_name" placeholder="enter name"/>
             </div>
             <div class="choice" onclick="onKeyHandler({keyCode: 32})">
                 <span class="label" id="choice0_label">Start</span>
@@ -113,118 +23,73 @@
                 </span>
             </div>
         </div>
-        <div class="choice" id="choice1" onclick="onKeyHandler({keyCode: 37})">
-            <span class="label" id="choice1_label">Toad</span>
-            <img class="label_img" id="choice1_label_img" />
-            <span class="info">Click or press
-                <span class="key">←</span> key
-            </span>
-        </div>
-        <div class="choice" id="choice2" onclick="onKeyHandler({keyCode: 39})">
-            <span class="label" id="choice2_label">Toad</span>
-            <img class="label_img" id="choice2_label_img" />
-            <span class="info">Click or press
-                <span class="key">→</span> key
-            </span>
-        </div>
+    </div>
+</div>
+
+<div class="display" id="display_image">
+    <div class="question">
+        <span>Look at the image.</span>
+    </div>
+    <div class="choices">
         <div class="image_display">
-            <img id="image" src="">
+            <img id="image" src="" alt="">
             <div class="progress"></div>
         </div>
     </div>
 </div>
+
+<div class="display" id="display_choice">
+    <div class="question">
+        <span>Which class describes best the image you saw?</span>
+    </div>
+    <div class="choices">
+        <div class="choice" onclick="onKeyHandler({keyCode: 37})">
+            <span class="label" id="choice1_label">Toad</span>
+            <span class="info">Click or press <span class="key">←</span> key</span>
+        </div>
+        <div class="choice" onclick="onKeyHandler({keyCode: 39})">
+            <span class="label" id="choice2_label">Toad</span>
+            <span class="info">Click or press <span class="key">→</span> key</span>
+        </div>
+    </div>
+</div>
+
+<div class="display" id="display_maps">
+    <div class="question">
+        <span>Which are did you focus most for this decision?</span>
+    </div>
+    <div class="choices">
+        <div class="choice" onclick="onKeyHandler({keyCode: 37})">
+            <img src="" class="label_img" id="choice1_label_img" alt="" />
+            <span class="info">Click or press <span class="key">←</span> key</span>
+        </div>
+        <div class="choice" onclick="onKeyHandler({keyCode: 39})">
+            <img src="" class="label_img" id="choice2_label_img" alt="" />
+            <span class="info">Click or press <span class="key">→</span> key</span>
+        </div>
+    </div>
+</div>
+
+<div class="display" id="display_end">
+    <div class="question">
+        <span>The End.</span>
+    </div>
+    <div class="choices">
+
+    </div>
+</div>
 <script>
-    function get_date() {
-        const t = new Date()
-        const y = t.getFullYear()
-        const m = ('0' + (t.getMonth() + 1)).slice(-2)
-        const d = ('0' + t.getDate()).slice(-2)
-        const H = ('0' + t.getHours()).slice(-2)
-        const M = ('0' + t.getMinutes()).slice(-2)
-        const S = ('0' + t.getSeconds()).slice(-2)
-
-        return `${y}-${m}-${d}_${H}-${M}-${S}`
-    }
-
-    let image_index = 0;
     let question_list;
     let results = {
         time: get_date(),
+        name: "",
         data: [],
     };
-    let $ = document.querySelector;
 
-    function triggerKey(key, element){
-      if(!/^[a-z]$/.test(key)) return false;
-      if(!['INPUT','TEXTAREA'].includes(element.tagName)) return false;
-      const events = ['keydown', 'keypress', 'textInput', 'keyup'];
-      events.forEach(event_name=>{
-        const opts = 'textInput' === event_name ? {
-          inputType: 'insertText',
-          data: key
-        } : {
-          key: key,
-          code: `Key${key.toUpperCase()}`
-        };
-        const event = 'textInput' === event_name ?
-          new InputEvent('input', opts) :
-          new KeyboardEvent(event_name, opts);
-        element.dispatchEvent(event);
-        if('textInput' === event_name) element.value += key;
-      });
-      return true;
+    function show(part_name) {
+        document.querySelectorAll(".display").forEach((e) => e.style.display = "none");
+        document.querySelector(part_name).style.display = "";
     }
-
-    function waitingKeypress(keys) {
-      return new Promise((resolve) => {
-        window.onKeyHandler = function (e) {
-            console.log(e.keyCode);
-            for(let i = 0; i < keys.length; i++) {
-                if (e.keyCode === keys[i]) {
-                    document.removeEventListener('keydown', window.onKeyHandler);
-                    resolve(i);
-                }
-            }
-        }
-        document.addEventListener('keydown', window.onKeyHandler);
-      });
-    }
-    function delay(ms) {
-      return new Promise((resolve) => setTimeout(resolve, ms));
-    }
-
-    function show_start() {
-        document.querySelector(".image_display").style.display = "none";
-        document.querySelector(".progress").style.width = "0";
-        document.querySelector("#choice1").style.display = "none";
-        document.querySelector("#choice2").style.display = "none";
-        document.querySelector("#start").style.display = "flex";
-    }
-    function show_image() {
-        document.querySelector(".image_display").style.display = "flex";
-        document.querySelector(".progress").style.width = "100px";
-        document.querySelector("#choice1").style.display = "none";
-        document.querySelector("#choice2").style.display = "none";
-        document.querySelector("#start").style.display = "none";
-    }
-    function show_choices() {
-        document.querySelector(".image_display").style.display = "none";
-        document.querySelector(".progress").style.width = "0";
-        document.querySelector("#choice1").style.display = "flex";
-        document.querySelector("#choice2").style.display = "flex";
-        document.querySelector("#start").style.display = "none";
-
-        document.querySelector("#choice1_label").style.display = 'inline'
-        document.querySelector("#choice2_label").style.display = 'inline'
-        document.querySelector("#choice1_label_img").style.display = 'none'
-        document.querySelector("#choice2_label_img").style.display = 'none'
-    }
-    function show_choices2() {
-        document.querySelector(".image_display").style.display = "none";
-        document.querySelector(".progress").style.width = "0";
-        document.querySelector("#choice1").style.display = "flex";
-        document.querySelector("#choice2").style.display = "flex";
-        document.querySelector("#start").style.display = "none";
 
         document.querySelector("#choice1_label").style.display = 'none'
         document.querySelector("#choice2_label").style.display = 'none'
@@ -260,34 +125,14 @@
             set_image(document.querySelector("#choice2_label_img"), image_base_path+data.maps2),
         ]);
     }
-    function set_question(text) {
-        document.querySelector("#question_text").innerHTML = text
-    }
+
     function set_progress(progress) {
         document.querySelector(".progress").style.width = `${progress}%`;
     }
 
-    async function fetchPost(url, data)  {
-      // Default options are marked with *
-      const response = await fetch(url, {
-        method: "POST", // *GET, POST, PUT, DELETE, etc.
-        mode: "cors", // no-cors, *cors, same-origin
-        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-        credentials: "same-origin", // include, *same-origin, omit
-        headers: {
-          "Content-Type": "application/json",
-          // 'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        redirect: "follow", // manual, *follow, error
-        referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-        body: JSON.stringify(data), // body data type must match "Content-Type" header
-      });
-      return response.text(); // parses JSON response into native JavaScript objects
-    }
-
     async function ProcessEvents() {
         // show the start screen
-        show_start();
+        show("#display_start");
         // focus the input field
         document.querySelector("#input_name").focus();
         // download the data from the flask server
@@ -304,22 +149,19 @@
             await set_data(data)
 
             // show the image and let the progress bar run
-            set_question("Look at the image.");
-            show_image();
+            show("#display_image");
             for (let i = 0; i < 100; i++) {
                 set_progress(100 - i);
                 await delay(10);
             }
 
             // ask which class
-            set_question("Which class describes best the image you saw?");
-            show_choices();
+            show("#display_choice");
             // wait for the button press
             data.choice_answer  = await waitingKeypress([37, 39]);
 
             // ask about the attention map
-            set_question("Which are did you focus most for this decision?");
-            show_choices2();
+            show("#display_maps");
             // wait for the answer
             data.maps_answer  = await waitingKeypress([37, 39]);
 
@@ -330,8 +172,7 @@
             await fetchPost("save", results);
         }
         // display the end
-        set_question("The End");
-        show_end();
+        show("#display_end");
     }
     ProcessEvents();
 
