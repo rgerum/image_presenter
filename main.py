@@ -1,6 +1,6 @@
 import json
-
-from flask import Flask, url_for, request, make_response
+from pathlib import Path
+from flask import Flask, url_for, request, make_response, send_file
 from flask import render_template
 
 #import tensorflow
@@ -62,11 +62,23 @@ def save():
     data = request.json
     time = make_filename_save(data["time"])
     name = make_filename_save(data["name"])
+
+    Path("output_json").mkdir(exist_ok=True)
     with open(f"output_json/{time}_{name}.json", "w") as fp:
         json.dump(data, fp, indent=2)
+
+    Path("output_csv").mkdir(exist_ok=True)
     pd.DataFrame(data["data"]).to_csv(f"output_csv/{time}_{name}.csv")
     return "done"
 
 @app.route("/")
 def index():
     return render_template('index.html')
+
+@app.route("/style.css")
+def style():
+    return send_file('templates/style.css')
+
+@app.route("/helper_functions.js")
+def helper_functions():
+    return send_file('templates/helper_functions.js')
