@@ -34,12 +34,27 @@ def image(number):
 def data():
     with open("static/interp_exp_files/interpretability_experiment_formatting.txt", "r") as fp:
         data = json.load(fp)
+    # add index
+    for i, d in enumerate(data):
+        d["index"] = i
+    # shuffle the data
     np.random.shuffle(data)
     for d in data:
-        if np.random.random() > 0.5:
+        # flip a join for the choices and store the original order
+        coin1 = np.random.random() > 0.5
+        d["choices1_orig"] = d["choices1"]
+        d["choices2_orig"] = d["choices2"]
+        if coin1:
             d["choices1"], d["choices2"] = d["choices2"], d["choices1"]
-        if np.random.random() > 0.5:
+        d["choices_flip"] = coin1
+
+        # flip a join for the maps and store the original order
+        coin2 = np.random.random() > 0.5
+        d["maps1_orig"] = d["maps1"]
+        d["maps2_orig"] = d["maps2"]
+        if coin2:
             d["maps1"], d["maps2"] = d["maps2"], d["maps1"]
+        d["maps_flip"] = coin2
     return data
 
 

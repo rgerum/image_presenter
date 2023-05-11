@@ -3,7 +3,7 @@ body {
 }
 
 .display {
-    margin-top: max((100vh - 450px) / 3, 0px);
+    /*margin-top: max((100vh - 450px) / 3, 0px);*/
     /* background: #c2c2c2;
     border: 2px solid black;
     border-radius: 10px; */
@@ -93,4 +93,32 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+}
+
+.global_progress {
+    margin: 0 auto;
+    margin-top: 50px;
+    display: flex;
+    align-items: center;
+    width: 500px;
+}
+
+.global_progress div {
+    width: 500px;
+    height: 10px;
+    background: #afaeae;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.global_progress div span {
+    display: block;
+    width: 0;
+    height: 100%;
+    background: #fd4040;
+    transition: width 0.3s ease-in-out;
+}
+
+.global_progress p {
+    margin-left: 5px;
 }

@@ -7,6 +7,12 @@
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<div class="global_progress">
+    <div>
+        <span></span>
+    </div>
+    <p></p>
+</div>
 <div class="display" id="display_start">
     <div class="question">
         <span id="question_text"></span>
@@ -110,6 +116,11 @@
         document.querySelector(".progress").style.width = `${progress}%`;
     }
 
+    function set_global_progress(i, count) {
+        document.querySelector(".global_progress div span").style.width = `${i/count*100}%`;
+        document.querySelector(".global_progress p").innerText = `${i}/${count}`;
+    }
+
     async function ProcessEvents() {
         // show the start screen
         show("#display_start");
@@ -124,6 +135,7 @@
 
         // iterate over the questions
         for(let j = 0; j < question_list.length; j++) {
+            set_global_progress(j, question_list.length);
             // fill the display with the data
             let data = question_list[j];
             await set_data(data)
