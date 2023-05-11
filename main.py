@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 from flask import Flask, url_for, request, make_response, send_file
 from flask import render_template
+import numpy as np
 
 #import tensorflow
 from io import BytesIO
@@ -28,31 +29,19 @@ def image(number):
     print("image", number)
     return send_image(x1[int(number)])
 
+
 @app.route("/data")
 def data():
-    return [
-        {
-            'image': "00000.png",
-            'choices1': "toad",
-            'choices2': "tree",
-            'maps1': "00000.png",
-            'maps2': "00000.png",
-        },
-        {
-            'image': "00001.png",
-            'choices1': "road",
-            'choices2': "water",
-            'maps1': "00010.png",
-            'maps2': "00020.png",
-        },
-        {
-            'image': "00002.png",
-            'choices1': "car",
-            'choices2': "train",
-            'maps1': "00003.png",
-            'maps2': "00005.png",
-        }
-    ]
+    with open("static/interp_exp_files/interpretability_experiment_formatting.txt", "r") as fp:
+        data = json.load(fp)
+    np.random.shuffle(data)
+    for d in data:
+        if np.random.random() > 0.5:
+            d["choices1"], d["choices2"] = d["choices2"], d["choices1"]
+        if np.random.random() > 0.5:
+            d["maps1"], d["maps2"] = d["maps2"], d["maps1"]
+    return data
+
 
 def make_filename_save(filename):
     return re.sub("[^-_A-z0-9]*", "", filename.strip().replace(" ", "_"))
