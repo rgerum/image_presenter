@@ -113,7 +113,12 @@ def browser(urlFilePath=""):
         itemList = sorted(os.listdir(nestedFilePath))[::-1]
         if not urlFilePath.startswith("/"):
             urlFilePath = "/" + urlFilePath
-        return render_template('browser.html', urlFilePath=urlFilePath, itemList=itemList)
+        items = []
+        for i in itemList:
+            with open(Path(FILE_SYSTEM_ROOT) / i, "r") as fp:
+                size = len([0 for _ in fp])
+            items.append([i, size-1])
+        return render_template('browser.html', urlFilePath=urlFilePath, itemList=itemList, items=items)
     elif os.path.isfile(nestedFilePath):
         return send_file(nestedFilePath)
     return 'something bad happened'
