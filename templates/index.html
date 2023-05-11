@@ -74,6 +74,11 @@
             <span class="info">Click or press <span class="key">→</span> key</span>
         </div>
     </div>
+    <div class="choices">
+        <div class="image_display">
+            <img src="" class="label_img" id="choice0_label_img" alt="" />
+        </div>
+    </div>
 </div>
 
 <div class="display" id="display_end">
@@ -107,6 +112,7 @@
 
         return Promise.all([
             set_image(document.querySelector("#image"), image_base_path+data.image, image_size),
+            set_image(document.querySelector("#choice0_label_img"), image_base_path+data.image, image_size),
             set_image(document.querySelector("#choice1_label_img"), image_base_path+data.maps1, image_size),
             set_image(document.querySelector("#choice2_label_img"), image_base_path+data.maps2, image_size),
         ]);
@@ -152,12 +158,16 @@
             // ask which class
             show("#display_choice");
             // wait for the button press
+            let choice_time = new Date();
             data.choice_answer  = await waitingKeypress([37, 39]);
+            data.choice_answer_time = new Date() - choice_time;
 
             // ask about the attention map
             show("#display_maps");
             // wait for the answer
+            let map_time = new Date();
             data.maps_answer  = await waitingKeypress([37, 39]);
+            data.maps_answer_time = new Date() - map_time;
 
             // store the results
             results.data.push(data);
