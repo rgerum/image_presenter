@@ -32,6 +32,7 @@ def image(number):
 
 @app.route("/data")
 def data():
+    max_count = 500
     with open("static/interp_exp_files/interpretability_experiment_formatting.txt", "r") as fp:
         data = json.load(fp)
     # add index
@@ -39,7 +40,20 @@ def data():
         d["index"] = i
     # shuffle the data
     np.random.shuffle(data)
+
+    data_include = []
     for d in data:
+        if d["baseline_correct"] is True:
+            data_include.append(d)
+        if len(data_include) == max_count//2:
+            break
+    for d in data:
+        if d["baseline_correct"] is False:
+            data_include.append(d)
+        if len(data_include) == max_count:
+            break
+
+    for d in data_include:
         # flip a join for the choices and store the original order
         coin1 = np.random.random() > 0.5
         d["choices1_orig"] = d["choices1"]
@@ -55,7 +69,7 @@ def data():
         if coin2:
             d["maps1"], d["maps2"] = d["maps2"], d["maps1"]
         d["maps_flip"] = coin2
-    return data
+    return data_include
 
 
 def make_filename_save(filename):
