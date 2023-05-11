@@ -86,3 +86,39 @@ def style():
 @app.route("/helper_functions.js")
 def helper_functions():
     return send_file('templates/helper_functions.js')
+
+
+import zipfile
+from pathlib import Path
+
+def zip_dir(path: Path, zip_file_path: Path):
+    """Zip all contents of path to zip_file"""
+    files_to_zip = [
+        file for file in path.glob('*') if file.is_file()]
+    with zipfile.ZipFile(
+        zip_file_path, 'w', zipfile.ZIP_DEFLATED) as zip_f:
+        for file in files_to_zip:
+            print(file.name)
+            zip_f.write(file, file.name)
+
+FILE_SYSTEM_ROOT = "output_csv"
+import os
+@app.route('/output_csv/<path:urlFilePath>')
+@app.route('/output_csv/')
+def browser(urlFilePath=""):
+    print(browser, urlFilePath)
+    nestedFilePath = os.path.join(FILE_SYSTEM_ROOT, urlFilePath)
+    print(nestedFilePath)
+    if os.path.isdir(nestedFilePath):
+        itemList = sorted(os.listdir(nestedFilePath))[::-1]
+        if not urlFilePath.startswith("/"):
+            urlFilePath = "/" + urlFilePath
+        return render_template('browser.html', urlFilePath=urlFilePath, itemList=itemList)
+    elif os.path.isfile(nestedFilePath):
+        return send_file(nestedFilePath)
+    return 'something bad happened'
+
+@app.route('/output_csv.zip')
+def browser_zip():
+    zip_dir(Path("output_csv"), "output_csv.zip")
+    return send_file("output_csv.zip")
