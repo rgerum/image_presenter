@@ -20,12 +20,12 @@
     <div class="choices">
         <div id="start">
             <div id="form">
-                <label for="input_name">Name:</label><input id="input_name" placeholder="enter name"/>
+                <label for="input_name">Name:</label><input id="input_name" placeholder="provide one name"/>
             </div>
-            <div class="choice" onclick="onKeyHandler({keyCode: 32})">
+            <div class="choice" onclick="onKeyHandler({keyCode: 13})">
                 <span class="label" id="choice0_label">Start</span>
                 <span class="info">Click or press
-                    <span class="key" style="width: 30px"> </span> key
+                    <span class="key">⏎</span> key
                 </span>
             </div>
         </div>
@@ -135,7 +135,7 @@
         // download the data from the flask server
         question_list = await (await fetch("data")).json();
         // wait for the user to press the button
-        await waitingKeypress([32, 13]);
+        await waitingKeypress([13]);
         // store the name
         results.name = document.querySelector("#input_name").value.trim()
 
